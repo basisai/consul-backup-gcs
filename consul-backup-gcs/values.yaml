@@ -10,7 +10,7 @@ ttlSecondsAfterFinished: 86400
 
 image:
   repository: basisai/consul-backup-gcs
-  tag: 0.1.0-beta2
+  tag: 0.1.0
   pullPolicy: IfNotPresent
 
 env: {}
