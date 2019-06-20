@@ -25,6 +25,7 @@ data:
     service_account_key: /gcp/service_account.json
   consulTemplate: |
     pid_file = "/pid"
+    kill_signal = "SIGTERM"
 
     vault {
       vault_agent_token_file = "/vault/token"
