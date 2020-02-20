@@ -16,6 +16,7 @@
       template:
         dest: "{{ lookup('env','HOME') }}/.boto"
         src: "{{ playbook_dir }}/boto.ini"
+      when: service_account_key != ""
     - name: Get temporary file to save gcs
       tempfile:
         state: file
