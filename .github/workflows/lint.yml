@@ -12,19 +12,13 @@ jobs:
       - name: Fetch history
         run: git fetch --prune --unshallow
 
+      - name: Make kubeconfig directory
+        run: mkdir -p ~/.kube
+
       - name: Run chart-testing (lint)
         id: lint
         uses: helm/chart-testing-action@v1.0.0-rc.1
         with:
+          image: quay.io/helmpack/chart-testing:v3.0.0-rc.1
           config: tests/ct.yaml
           command: lint
-
-      - name: Create kind cluster
-        uses: helm/kind-action@v1.0.0-alpha.3
-        # Only build a kind cluster if there are chart changes to test.
-        if: steps.lint.outputs.changed == 'true'
-
-      - name: Run chart-testing (install)
-        uses: helm/chart-testing-action@v1.0.0-rc.1
-        with:
-          command: install
