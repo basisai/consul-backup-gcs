@@ -1,3 +1,5 @@
 validate-maintainers: false
 chart-dirs:
-- /consul-backup-gcs
+- /workdir
+charts:
+- consul-backup-gcs
