@@ -12,9 +12,6 @@ jobs:
       - name: Fetch history
         run: git fetch --prune --unshallow
 
-      - name: Make kubeconfig directory
-        run: mkdir -p ~/.kube
-
       - name: Run chart-testing (lint)
         id: lint
         uses: helm/chart-testing-action@v1.0.0-rc.1
