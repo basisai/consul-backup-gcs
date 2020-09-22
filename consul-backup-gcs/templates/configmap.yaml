@@ -20,6 +20,10 @@ data:
   vars.yml: |
     consul_environment:
       CONSUL_HTTP_ADDR: {{ .Values.consul.address }}
+      CONSUL_HTTP_SSL: {{ .Values.consul.tls.enabled }}
+      {{- if .Values.consul.tls.cacert }}
+      CONSUL_CACERT: /config/server.pem
+      {{- end }}
     gcs_bucket: {{ required "GCS bucket is required" .Values.gcs.bucket }}
     gcs_prefix: {{ .Values.gcs.prefix }}
     {{- if .Values.gcs.serviceAccountKey }}

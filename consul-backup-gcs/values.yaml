@@ -21,13 +21,12 @@ fullnameOverride: ""
 serviceAccount: "consul-backup-gcs"
 
 consul:
+  # Consul Server address and port
+  # Remember to update port for TLS
   address: consul-server.service.consul:8500
   tls:
     enabled: false
     cacert: null
-    autoEncrypt:
-      enabled: false
-      serverAddress: consul-server.service.consul:8500
 
 resources:
   backup:
