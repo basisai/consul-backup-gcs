@@ -30,7 +30,7 @@ spec:
         {{- toYaml . | nindent 8 }}
         {{- end }}
       annotations:
-        checksum/config: {{ include (print $.Template.BasePath "/config_map.yaml") . | sha256sum }}
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
         {{- with .Values.annotations.cronJob }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
@@ -56,37 +56,6 @@ spec:
           serviceAccountName: {{ .Values.serviceAccount }}
           automountServiceAccountToken: true
           restartPolicy: OnFailure
-          {{- if .Values.vault.enabled }}
-          initContainers:
-            - name: vault-agent
-              image: "{{ .Values.vault.image }}:{{ .Values.vault.tag }}"
-              imagePullPolicy: {{ .Values.vault.pullPolicy }}
-              resources:
-                {{- toYaml .Values.resources.vaultAgent | nindent 16 }}
-              volumeMounts:
-                - name: config
-                  mountPath: /config
-                  readOnly: true
-                - name: vault-token
-                  mountPath: /vault
-              env:
-                - name: VAULT_ADDR
-                  value: {{ include "vaultAddress" . | quote }}
-                - name: VAULT_CAPATH
-                  value: /config/vault_ca.pem
-                - name: VAULT_LOG_LEVEL
-                  value: trace
-                {{- if .Values.vault.env }}
-                {{- toYaml .Values.vault.env | nindent 16 }}
-                {{- end }}
-              command:
-                - /bin/vault
-              args:
-                - agent
-                - -config=/config/vault_agent.hcl
-              resources:
-                {{- toYaml .Values.resources.consulTemplate | nindent 16 }}
-          {{- end }}
           containers:
             - name: {{ .Chart.Name }}
               image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -94,19 +63,16 @@ spec:
               resources:
                 {{- toYaml .Values.resources.backup | nindent 16 }}
               volumeMounts:
-                {{- if .Values.vault.enabled }}
-                - name: gcp-service-account
-                  mountPath: /gcp
-                {{- end }}
                 - name: config
                   mountPath: /config
                   readOnly: true
-              env:
-                {{- if .Values.vault.enabled }}
-                - name: GOOGLE_CREDENTIALS
-                  value: /gcp/service_account.json
+                {{- if .Values.gcs.serviceAccountKey }}
+                - name: gcs
+                  mountPath: /gcs
+                  readOnly: true
                 {{- end }}
               {{- with .Values.env }}
+              env:
                 {{- toYaml . | nindent 16 }}
               {{- end }}
               args:
@@ -120,11 +86,10 @@ spec:
             - name: config
               configMap:
                 name: {{ include "consul-backup-gcs.fullname" . }}
-            {{- if .Values.vault.enabled }}
-            - name: vault-token
-              emptyDir: {}
-            - name: gcp-service-account
-              emptyDir: {}
+            {{- if .Values.gcs.serviceAccountKey }}
+            - name: gcs
+              secret:
+                name: {{ include "consul-backup-gcs.fullname" . }}
             {{- end }}
           {{- with .Values.nodeSelector }}
           nodeSelector:
