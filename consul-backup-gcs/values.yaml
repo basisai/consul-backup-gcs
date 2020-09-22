@@ -24,7 +24,7 @@ consul:
   address: consul-server.service.consul:8500
   tls:
     enabled: false
-    serverCA: null
+    cacert: null
     autoEncrypt:
       enabled: false
       serverAddress: consul-server.service.consul:8500

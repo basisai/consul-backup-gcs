@@ -25,3 +25,6 @@ data:
     {{- if .Values.gcs.serviceAccountKey }}
     service_account_key: /gcs/gcs.json
     {{- end }}
+  {{- if .Values.consul.tls.cacert }}
+  server.pem: {{ .Values.consul.tls.cacert | quote}}
+  {{- end }}

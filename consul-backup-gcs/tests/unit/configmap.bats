@@ -29,3 +29,27 @@ load _helpers
       yq -r '.service_account_key' | tee /dev/stderr)
   [ "${actual}" = '/gcs/gcs.json' ]
 }
+
+############################################################
+# TLS
+############################################################
+@test "configMap: CA Certificate is populated" {
+  cd `chart_dir`
+
+  local actual=$(helm template \
+      --show-only templates/configmap.yaml  \
+      --set 'gcs.bucket=foobar' \
+      .  | tee /dev/stderr |
+      yq -r '.data."server.pem"' | tee /dev/stderr)
+
+  [ "${actual}" = 'null' ]
+
+  local actual=$(helm template \
+      --show-only templates/configmap.yaml  \
+      --set 'gcs.bucket=foobar' \
+      --set 'consul.tls.cacert=foobar' \
+      .  | tee /dev/stderr |
+      yq -r '.data."server.pem"' | tee /dev/stderr)
+
+  [ "${actual}" = 'foobar' ]
+}
