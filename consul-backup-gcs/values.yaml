@@ -43,6 +43,14 @@ tolerations: []
 
 affinity: {}
 
+args:
+  - "ansible-playbook"
+  - '--inventory'
+  - "localhost,"
+  - '--connection=local'
+  - "--extra-vars=@/config/vars.yml"
+  - site.yml
+
 labels:
   serviceAccount: {}
   cronJob: {}
