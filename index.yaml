@@ -3,6 +3,16 @@ entries:
   consul-backup-gcs:
   - apiVersion: v1
     appVersion: 0.1.0
+    created: "2021-09-23T09:29:05.049105784Z"
+    description: Backup Consul Snapshots to GCS
+    digest: 2be9102b16afce345ecf155cb4fe7b5e6d7278f6c00020bab7c90ca5b90700e6
+    home: https://github.com/basisai/consul-backup-gcs
+    name: consul-backup-gcs
+    urls:
+    - https://github.com/basisai/consul-backup-gcs/releases/download/consul-backup-gcs-0.3.1/consul-backup-gcs-0.3.1.tgz
+    version: 0.3.1
+  - apiVersion: v1
+    appVersion: 0.1.0
     created: "2020-09-22T10:26:11.296594436Z"
     description: Backup Consul Snapshots to GCS
     digest: de2ae5b07606c512aaa790ade59fc7fe29cf2c2ad80ebb2480a4b8537f365bd3
