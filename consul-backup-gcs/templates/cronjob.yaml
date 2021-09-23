@@ -75,13 +75,10 @@ spec:
               env:
                 {{- toYaml . | nindent 16 }}
               {{- end }}
+              {{- with .Values.args }}
               args:
-                - "ansible-playbook"
-                - '--inventory'
-                - "localhost,"
-                - '--connection=local'
-                - "--extra-vars=@/config/vars.yml"
-                - site.yml
+                {{- toYaml . | nindent 16 }}
+              {{- end }}
           volumes:
             - name: config
               configMap:
