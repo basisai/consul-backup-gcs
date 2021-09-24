@@ -46,11 +46,11 @@ spec:
             app.kubernetes.io/name: {{ include "consul-backup-gcs.name" . }}
             app.kubernetes.io/instance: {{ .Release.Name }}
             {{- with .Values.labels.pods }}
-            {{- toYaml . | nindent 10 }}
+            {{- toYaml . | nindent 12 }}
             {{- end }}
           annotations:
             {{- with .Values.annotations.pods }}
-            {{- toYaml . | nindent 10 }}
+            {{- toYaml . | nindent 12 }}
             {{- end }}
         spec:
           serviceAccountName: {{ .Values.serviceAccount }}
